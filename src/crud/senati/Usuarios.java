@@ -4,7 +4,9 @@
  */
 package crud.senati;
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 
 
@@ -39,7 +41,7 @@ public class Usuarios extends javax.swing.JFrame {
 }
             
 
-            String[] headers={"Id, Name", "Lastname"};
+            String[] headers={"Id", "Name", "Lastname"};
           
             DefaultTableModel model = new DefaultTableModel(headers,0);
             
@@ -84,6 +86,13 @@ public class Usuarios extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         jLabel1.setText("Formulario de Usuarios");
@@ -99,6 +108,11 @@ public class Usuarios extends javax.swing.JFrame {
                 "ID", "Name", "Lastname"
             }
         ));
+        tblUsuarios.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tblUsuariosFocusGained(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblUsuarios);
 
         btnAgregar.setText("Agregar");
@@ -109,8 +123,18 @@ public class Usuarios extends javax.swing.JFrame {
         });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -135,16 +159,16 @@ public class Usuarios extends javax.swing.JFrame {
                             .addComponent(btnEliminar)
                             .addComponent(btnSalir)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(212, 212, 212)
+                        .addGap(220, 220, 220)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(91, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel1)
-                .addGap(46, 46, 46)
+                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -169,7 +193,63 @@ public class Usuarios extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+        AgregarUsuario fromAdd = new AgregarUsuario();
+        fromAdd.setVisible(true);
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        if(tblUsuarios.getSelectedRow()>-1){
+            TableModel modelo = tblUsuarios.getModel();
+            String id = modelo.getValueAt(tblUsuarios.getSelectedRow(),0).toString();
+            String name = modelo.getValueAt(tblUsuarios.getSelectedRow(),1).toString();
+            String lastname=modelo.getValueAt(tblUsuarios.getSelectedRow(),2).toString();
+            
+            editarUsuario formUpd = new editarUsuario(id,name,lastname);
+            formUpd.setVisible(true);
+}else{
+            JOptionPane.showMessageDialog(null, "selecciona una casilla");
+            
+        }
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void tblUsuariosFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblUsuariosFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblUsuariosFocusGained
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        cargarUsuarios();
+        
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        if(tblUsuarios.getSelectedRow()>-1){
+            TableModel modelo = tblUsuarios.getModel();
+            String id = modelo.getValueAt(tblUsuarios.getSelectedRow(),0).toString();
+            Conexion cn = new Conexion();
+            String query = "DELETE FROM usuario WHERE id =?";
+            try{
+                PreparedStatement ps = cn.conectar().prepareStatement(query);
+                ps.setInt(1, Integer.parseInt(id));
+                ps.execute();
+                System.out.println("Eliminar");
+            
+            }catch (SQLException e){
+                System.out.println(e);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "selecciona una casilla");
+        }
+       
+        
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
