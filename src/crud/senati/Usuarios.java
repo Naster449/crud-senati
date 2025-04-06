@@ -32,7 +32,7 @@ public class Usuarios extends javax.swing.JFrame {
         
         String query = "SELECT *FROM usuario";
         
-        try{Statement st=null;
+         try{Statement st=null;
         st =cn.conectar().createStatement();
                 
                 ResultSet rs =st.executeQuery(query);

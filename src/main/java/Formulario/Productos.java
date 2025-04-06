@@ -80,7 +80,6 @@ public class Productos extends javax.swing.JFrame {
         tblProductos = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -115,8 +114,11 @@ public class Productos extends javax.swing.JFrame {
         });
 
         btnEditar.setText("Editar");
-
-        jButton3.setText("Eliminar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,15 +129,10 @@ public class Productos extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(59, 59, 59)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAgregar)
-                                    .addComponent(btnEditar)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(jButton3))))
+                            .addComponent(btnAgregar)
+                            .addComponent(btnEditar)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(210, 210, 210)
                         .addComponent(jLabel1)))
@@ -146,17 +143,15 @@ public class Productos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(48, 48, 48)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(btnAgregar)
-                        .addGap(146, 146, 146)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addGap(33, 33, 33)
+                        .addComponent(btnEditar)))
                 .addContainerGap(129, Short.MAX_VALUE))
         );
 
@@ -173,9 +168,27 @@ public class Productos extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         // TODO add your handling code here:
+        cargarProductos();
          
         
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        
+        if(tblProductos.getSelectedRow()>-1){
+            TableModel modelo = tblProductos.getModel();
+            String id = modelo.getValueAt(tblProductos.getSelectedRow(),0).toString();
+            String nombre = modelo.getValueAt(tblProductos.getSelectedRow(),1).toString();
+            String categoria=modelo.getValueAt(tblProductos.getSelectedRow(),2).toString();
+            
+            editarProducto formUpd = new editarProducto(id,nombre,categoria);
+            formUpd.setVisible(true);
+}else{
+            JOptionPane.showMessageDialog(null, "selecciona una casilla");
+            
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,11 +228,20 @@ public class Productos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEditar;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblProductos;
     // End of variables declaration//GEN-END:variables
+
+    private static class Conexion {
+
+        public Conexion() {
+        }
+
+        private Object conectar() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
 
     
 }
